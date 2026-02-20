@@ -2098,7 +2098,7 @@ p {
 .modal-container .modal-content {
     position: relative;
     padding: 0 2.5rem 2.5rem;
-    max-width: 560px;
+    max-width: 830px;
     margin: 0 auto;
     transform: none;
     top: auto;
@@ -2255,7 +2255,7 @@ p {
 
 .checkbox-item input:checked + .checkbox-custom::after {
     content: '✓';
-    color: white;
+    color: black;
     font-size: 0.8rem;
     font-weight: bold;
 }
@@ -2264,7 +2264,7 @@ p {
     content: '';
     width: 8px;
     height: 8px;
-    background: white;
+    background: black;
     border-radius: 50%;
 }
 
@@ -2314,10 +2314,12 @@ p {
 .amount-btn:hover,
 .amount-btn.selected {
     background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-    color: white;
-    border-color: transparent;
+    color: black;
+    background-color: rgba(0, 0, 0, 0.1);
+    
+    border-color: #000000;
     transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+    box-shadow: 0 10px 30px rgb(0, 0, 0);
 }
 
 .amount-btn.custom-amount {
@@ -2397,10 +2399,10 @@ p {
 
 .payment-option input:checked + .payment-label {
     background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-    color: white;
+    color: rgba(0, 0, 0, 0.05);
     border-color: transparent;
     transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .payment-icon {
