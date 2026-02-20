@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Careers - NCORE Foundation</title>
+    <meta name="description" content="Join NCORE Foundation. Explore open positions and work with us on mission-driven cyber rehabilitation and digital safety.">
+    <meta name="keywords" content="NCORE careers, jobs, cyber rehabilitation, NGO jobs, NCORE Foundation">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <style>
+        .careers-hero{background:linear-gradient(135deg,#f8fafc 0%,#e2e8f0 100%);padding:4rem 0 3rem;margin-top:70px;}
+        .careers-hero .hero-content{text-align:center;}
+        .careers-hero .hero-buttons{justify-content:center;}
+        .work-culture-wrap{background:#f8fafc;}
+        .work-culture-wrap .container{max-width:960px;margin:0 auto;}
+        .work-culture-intro{text-align:center;max-width:640px;margin:0 auto 2rem;color:#475569;line-height:1.7;}
+        .work-culture-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin-bottom:1.5rem;}
+        .culture-card{background:#fff;border-radius:16px;padding:1.25rem;cursor:pointer;border:2px solid #e2e8f0;transition:all .3s ease;text-align:center;box-shadow:0 2px 12px rgba(15,118,110,.06);}
+        .culture-card:hover{border-color:rgba(16,185,129,.4);box-shadow:0 8px 24px rgba(16,185,129,.12);transform:translateY(-2px);}
+        .culture-card.active{border-color:#10b981;background:linear-gradient(180deg,#fff 0%,rgba(16,185,129,.04) 100%);box-shadow:0 8px 24px rgba(16,185,129,.15);}
+        .culture-card-icon{width:48px;height:48px;margin:0 auto .75rem;border-radius:12px;background:rgba(16,185,129,.1);display:flex;align-items:center;justify-content:center;font-size:1.5rem;}
+        .culture-card.active .culture-card-icon{background:rgba(16,185,129,.18);}
+        .culture-card-title{font-size:.95rem;font-weight:700;color:#0f172a;margin:0;}
+        .culture-detail{background:#fff;border-radius:16px;padding:1.75rem 2rem;border:1px solid #e2e8f0;box-shadow:0 4px 20px rgba(15,118,110,.08);min-height:100px;transition:opacity .25s ease;}
+        .culture-detail h4{margin:0 0 .5rem;color:#0f172a;font-size:1.1rem;}
+        .culture-detail p{margin:0;color:#475569;line-height:1.65;}
+        @media (max-width:900px){.work-culture-grid{grid-template-columns:repeat(2,1fr);}}
+        @media (max-width:480px){.work-culture-grid{grid-template-columns:1fr;}.culture-card{padding:1rem;}}
+        .positions-wrap{background:#f8fafc;}
+        .positions-grid{display:grid;grid-template-columns:380px 1fr;gap:2rem;align-items:start;max-width:1000px;margin:2rem auto 0;}
+        .positions-list{display:flex;flex-direction:column;gap:.75rem;}
+        .position-item{background:#fff;border-radius:12px;padding:1.25rem 1.5rem;cursor:pointer;border:2px solid transparent;transition:all .2s;box-shadow:0 2px 8px rgba(15,118,110,.06);}
+        .position-item:hover{border-color:rgba(16,185,129,.3);}
+        .position-item.active{border-color:#10b981;box-shadow:0 4px 16px rgba(16,185,129,.15);}
+        .position-item h4{margin:0 0 .35rem;font-size:1.05rem;color:#0f172a;}
+        .position-item-meta{font-size:.875rem;color:#64748b;}
+        .job-detail-card{background:#fff;border-radius:16px;padding:2rem;box-shadow:0 4px 20px rgba(15,118,110,.08);border:1px solid #e2e8f0;}
+        .job-detail-card h3{margin:0 0 .5rem;color:#0f172a;}
+        .job-detail-meta{font-size:.9rem;color:#64748b;margin-bottom:1.5rem;}
+        .job-detail-card h4{margin:1.25rem 0 .5rem;font-size:1rem;color:#0f172a;}
+        .job-detail-card ul{margin:0 0 1rem;padding-left:1.25rem;color:#334155;}
+        .job-detail-card p{margin:0;color:#475569;line-height:1.6;}
+        .no-openings{text-align:center;padding:3rem 2rem;background:#fff;border-radius:16px;max-width:560px;margin:2rem auto;color:#475569;}
+        .no-openings a{color:#10b981;font-weight:600;}
+        @media (max-width:900px){.positions-grid{grid-template-columns:1fr;}.job-detail-card{margin-top:1rem;}}
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <a href="index.html" class="logo">
+                <img src="images/logo_b.png" alt="NCORE Logo" class="logo-img">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-dropdown">
+                    <a href="#" class="nav-link dropdown-toggle">
+                        What We Do?
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="rehab-center.html" class="dropdown-link">NCORE Rehibilation Center</a></li>
+                        <li><a href="https://digitaldetoxjunior.ncorefoundation.org/" class="dropdown-link" target="_blank" rel="noopener">Digital Detox Junior</a></li>
+                    </ul>
+                </li>
+                <li class="nav-dropdown">
+                    <a href="#" class="nav-link dropdown-toggle">
+                        About Us
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="index.html#about" class="dropdown-link">About Us</a></li>
+                        <li><a href="our-team.html" class="dropdown-link">Our Team</a></li>
+                        <li><a href="careers.html" class="dropdown-link">Careers</a></li>
+                    </ul>
+                </li>
+                <!--<li class="nav-dropdown">
+                    <a href="media-center.html" class="nav-link">
+                        Media Centre
+                    </a>
+                    
+                </li>-->
+
+                <li>
+                    <a href="contact.html" class="nav-link">Contact Us</a>
+                </li>
+
+                <li class="nav-cta">
+                    <a href="https://toolkit.ncorefoundation.org/" class="btn btn-donate">Cyber Safe Toolkit</a>
+                </li>
+            </ul>
+            <button class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+
+    <!-- Hero -->
+    <section class="careers-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Careers</h1>
+                <p class="hero-subtitle" style="max-width: 640px; margin: 0 auto 1.5rem;">Join us in building a safer digital world. Work with NCORE Foundation on mission-driven cyber rehabilitation and digital safety.</p>
+                <div class="hero-buttons">
+                    <a href="#open-positions" class="btn btn-primary">View Open Positions</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Work Culture -->
+    <section class="section work-culture-wrap">
+        <div class="container">
+            <h2 class="text-center">Our Work <span class="text-gradient">Culture</span></h2>
+            <p class="work-culture-intro">
+                At NCORE Foundation, we are driven by a shared mission to support cyber rehabilitation and digital safety. Click each value to explore what we stand for.
+            </p>
+            <div class="work-culture-grid" id="cultureGrid">
+                <div class="culture-card active" data-culture="0" tabindex="0" role="button">
+                    <div class="culture-card-icon">🎯</div>
+                    <div class="culture-card-title">Mission-first mindset</div>
+                </div>
+                <div class="culture-card" data-culture="1" tabindex="0" role="button">
+                    <div class="culture-card-icon">🤝</div>
+                    <div class="culture-card-title">Collaborative teams</div>
+                </div>
+                <div class="culture-card" data-culture="2" tabindex="0" role="button">
+                    <div class="culture-card-icon">⚡</div>
+                    <div class="culture-card-title">Ownership &amp; accountability</div>
+                </div>
+                <div class="culture-card" data-culture="3" tabindex="0" role="button">
+                    <div class="culture-card-icon">📚</div>
+                    <div class="culture-card-title">Continuous learning</div>
+                </div>
+                <div class="culture-card" data-culture="4" tabindex="0" role="button">
+                    <div class="culture-card-icon">✨</div>
+                    <div class="culture-card-title">Respect and integrity</div>
+                </div>
+            </div>
+            <div class="culture-detail" id="cultureDetail">
+                <h4 id="cultureDetailTitle">Mission-first mindset</h4>
+                <p id="cultureDetailText">We align every initiative with our goal to support cyber rehabilitation and digital safety. Decisions are made with impact first, so our work creates real change for individuals and communities.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Open Positions -->
+    <section id="open-positions" class="section positions-wrap">
+        <div class="container">
+            <h2 class="text-center">Open <span class="text-gradient">Positions</span></h2>
+            <div id="positionsContainer">
+                <div class="positions-grid" id="positionsGrid" style="display: none;">
+                    <div class="positions-list" id="positionsList"></div>
+                    <div class="job-detail-card" id="jobDetailCard"></div>
+                </div>
+                <div class="no-openings" id="noOpenings" style="display: none;">
+                    <p>Currently there are no active openings. You can share your profile at <a href="mailto:careers@ncorefoundation.org">careers@ncorefoundation.org</a>.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>NCORE</h3>
+                    <p>Network for Cyber Online Rehabilitation and Empowerment</p>
+                    <p>Building a safer digital world through education, collaboration, and innovation.</p>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/ncore.foundation/" class="social-link" aria-label="Instagram"><svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+  <path fill="currentColor" fill-rule="evenodd" d="M3 8a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8Zm5-3a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V8a3 3 0 0 0-3-3H8Zm7.597 2.214a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2h-.01a1 1 0 0 1-1-1ZM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm-5 3a5 5 0 1 1 10 0 5 5 0 0 1-10 0Z" clip-rule="evenodd"/>
+</svg></a>
+                        <a href="https://www.linkedin.com/company/network-for-cyber-online-rehabilitation-empowerment/" class="social-link" aria-label="LinkedIn"><svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.213 9.787a3.391 3.391 0 0 0-4.795 0l-3.425 3.426a3.39 3.39 0 0 0 4.795 4.794l.321-.304m-.321-4.49a3.39 3.39 0 0 0 4.795 0l3.424-3.426a3.39 3.39 0 0 0-4.794-4.795l-1.028.961"/>
+</svg>
+</a>
+                        <a href="https://www.facebook.com/people/NCORE-Foundation/61578747959138/" class="social-link" aria-label="Facebook"><svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+  <path fill-rule="evenodd" d="M13.135 6H15V3h-1.865a4.147 4.147 0 0 0-4.142 4.142V9H7v3h2v9.938h3V12h2.021l.592-3H12V6.591A.6.6 0 0 1 12.592 6h.543Z" clip-rule="evenodd"/>
+</svg>
+</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="index.html#about">About Us</a>
+                     
+                    <a href="careers.html">Careers</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p>📍 T-11, 1106, Amolik Sankalp, Sector-85, Faridabad, Haryana-121003</p>
+                    <p>📧 contact@ncorefoundation.org</p>
+                    <p>📞 +917011433575</p>
+                    <p>📞 +919567651299</p>
+                    <p>🕒 Mon-Fri: 9:00 AM - 6:00 PM</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 NCORE. All rights reserved. | Privacy Policy | Terms of Service</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var cultureValues = [
+                { title: "Mission-first mindset", text: "We align every initiative with our goal to support cyber rehabilitation and digital safety. Decisions are made with impact first, so our work creates real change for individuals and communities." },
+                { title: "Collaborative teams", text: "We work across functions and with partners. Open communication and shared ownership help us deliver better outcomes and foster a supportive environment." },
+                { title: "Ownership & accountability", text: "Everyone is empowered to own their work. We take responsibility for results, learn from setbacks, and hold ourselves to high standards." },
+                { title: "Continuous learning", text: "We invest in growth through training, mentorship, and new challenges. Staying curious keeps us relevant and effective in a fast-changing field." },
+                { title: "Respect and integrity", text: "We treat everyone with respect and operate with transparency and ethics. Trust is the foundation of our culture and our partnerships." }
+            ];
+
+            var cultureGrid = document.getElementById('cultureGrid');
+            var cultureDetail = document.getElementById('cultureDetail');
+            var cultureDetailTitle = document.getElementById('cultureDetailTitle');
+            var cultureDetailText = document.getElementById('cultureDetailText');
+
+            if (cultureGrid && cultureDetailTitle && cultureDetailText) {
+                cultureGrid.querySelectorAll('.culture-card').forEach(function(card) {
+                    card.setAttribute('aria-pressed', card.classList.contains('active'));
+                    card.addEventListener('click', function() {
+                        var i = parseInt(card.getAttribute('data-culture'), 10);
+                        cultureGrid.querySelectorAll('.culture-card').forEach(function(c) {
+                            c.classList.remove('active');
+                            c.setAttribute('aria-pressed', 'false');
+                        });
+                        card.classList.add('active');
+                        card.setAttribute('aria-pressed', 'true');
+                        cultureDetailTitle.textContent = cultureValues[i].title;
+                        cultureDetailText.textContent = cultureValues[i].text;
+                    });
+                    card.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            card.click();
+                        }
+                    });
+                });
+            }
+
+            const openPositions = [
+                {
+                    id: "program-coordinator",
+                    title: "Program Coordinator (Rehabilitation)",
+                    location: "Indore, MP",
+                    type: "Full-time",
+                    description: "You will support the design and delivery of NCORE rehabilitation programs, coordinate with partners and beneficiaries, and help track impact. This role is central to our mission of supporting cyber harm survivors.",
+                    responsibilities: [
+                        "Support program design and rollout for rehabilitation initiatives",
+                        "Coordinate with partner institutions and beneficiaries",
+                        "Help collect and report impact data",
+                        "Assist in workshops and awareness sessions"
+                    ],
+                    requirements: [
+                        "Bachelor’s degree or equivalent experience in social work, psychology, or related field",
+                        "Strong organisational and communication skills",
+                        "Comfort with basic data and reporting",
+                        "Willingness to travel as needed"
+                    ]
+                },
+                {
+                    id: "digital-safety-lead",
+                    title: "Digital Safety Awareness Lead",
+                    location: "Remote",
+                    type: "Full-time",
+                    description: "Lead awareness campaigns and workshops on cyber safety for students, professionals, and communities. You will create content, deliver sessions, and collaborate with schools and organisations.",
+                    responsibilities: [
+                        "Design and deliver cyber safety awareness workshops",
+                        "Create and update educational content and materials",
+                        "Build and maintain relationships with schools and organisations",
+                        "Track reach and outcomes of awareness activities"
+                    ],
+                    requirements: [
+                        "Experience in education, training, or advocacy",
+                        "Good understanding of cyber safety and digital literacy",
+                        "Strong presentation and facilitation skills",
+                        "Ability to work independently and with teams"
+                    ]
+                },
+                {
+                    id: "communications-intern",
+                    title: "Communications & Outreach Intern",
+                    location: "Hybrid",
+                    type: "Internship",
+                    description: "Support NCORE’s communications, social media, and outreach. You will help create content, manage channels, and engage with our audience.",
+                    responsibilities: [
+                        "Draft and schedule social media posts and updates",
+                        "Support creation of newsletters and blog content",
+                        "Help maintain website and resource pages",
+                        "Assist with event and campaign outreach"
+                    ],
+                    requirements: [
+                        "Currently pursuing or recently completed degree in communications, marketing, or related field",
+                        "Familiarity with social media and basic content tools",
+                        "Good written English and attention to detail",
+                        "Commitment of at least 3 months"
+                    ]
+                },
+                {
+                    id: "volunteer-community",
+                    title: "Community Outreach Volunteer",
+                    location: "Multiple / Remote",
+                    type: "Volunteer",
+                    description: "Support community outreach, awareness drives, and local partnerships. Ideal for individuals who want to contribute to cyber safety and rehabilitation on a flexible basis.",
+                    responsibilities: [
+                        "Participate in local awareness sessions and events",
+                        "Help disseminate NCORE resources in your community",
+                        "Share feedback and suggestions from the field",
+                        "Support coordination with local partners where relevant"
+                    ],
+                    requirements: [
+                        "Interest in cyber safety and rehabilitation",
+                        "Good communication and reliability",
+                        "Ability to dedicate a few hours per week",
+                        "Openness to training and guidelines provided by NCORE"
+                    ]
+                }
+            ];
+
+            const listEl = document.getElementById('positionsList');
+            const cardEl = document.getElementById('jobDetailCard');
+            const gridEl = document.getElementById('positionsGrid');
+            const noEl = document.getElementById('noOpenings');
+
+            const bodyTemplate = "Full Name:\nPhone:\nLocation:\nLinkedIn:\nResume Link:\nWhy I want to join NCORE:\n";
+
+            function applyMailto(job) {
+                const subject = "Application for " + job.title;
+                const body = encodeURIComponent(bodyTemplate);
+                const subj = encodeURIComponent(subject);
+                return "mailto:careers@ncorefoundation.org?subject=" + subj + "&body=" + body;
+            }
+
+            function renderDetail(job) {
+                const resp = job.responsibilities.map(function(r) { return "<li>" + r + "</li>"; }).join("");
+                const req = job.requirements.map(function(r) { return "<li>" + r + "</li>"; }).join("");
+                cardEl.innerHTML =
+                    "<h3>" + job.title + "</h3>" +
+                    "<div class=\"job-detail-meta\">" + job.location + " &middot; " + job.type + "</div>" +
+                    "<p>" + job.description + "</p>" +
+                    "<h4>Responsibilities</h4><ul>" + resp + "</ul>" +
+                    "<h4>Requirements</h4><ul>" + req + "</ul>" +
+                    "<a href=\"" + applyMailto(job) + "\" class=\"btn btn-primary\">Apply Now</a>";
+            }
+
+            function selectJob(index) {
+                var items = listEl.querySelectorAll(".position-item");
+                items.forEach(function(el, i) { el.classList.toggle("active", i === index); });
+                renderDetail(openPositions[index]);
+            }
+
+            if (openPositions.length === 0) {
+                gridEl.style.display = "none";
+                noEl.style.display = "block";
+            } else {
+                noEl.style.display = "none";
+                gridEl.style.display = "grid";
+                listEl.innerHTML = "";
+                openPositions.forEach(function(job, i) {
+                    var div = document.createElement("div");
+                    div.className = "position-item" + (i === 0 ? " active" : "");
+                    div.innerHTML = "<h4>" + job.title + "</h4><div class=\"position-item-meta\">" + job.location + " &middot; " + job.type + "</div>";
+                    div.addEventListener("click", function() { selectJob(i); });
+                    listEl.appendChild(div);
+                });
+                renderDetail(openPositions[0]);
+            }
+        });
+    </script>
+</body>
+</html>

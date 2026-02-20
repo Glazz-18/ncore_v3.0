@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NCORE Rehabilitation Centers - NCORE Foundation</title>
+    <meta name="description" content="Learn how NCORE Rehabilitation Centers deliver structured recovery, reintegration, and long-term support, and how partners can collaborate to open new centers.">
+    <meta name="keywords" content="NCORE rehabilitation centers, cyber rehabilitation, reintegration, CSR partnerships, NGO collaboration, government partnerships">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <style>
+        .rehab-map-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:2rem;align-items:start;}
+        .india-map{position:relative;background:#fff;border:1px solid #e2e8f0;border-radius:20px;min-height:420px;height:420px;padding:0;overflow:hidden;}
+        .india-map #indiaMap{width:100%;height:100%;}
+        .india-map .leaflet-container{width:100%;height:100%;border-radius:20px;}
+        .center-pin{position:absolute;width:14px;height:14px;border-radius:50%;background:#10b981;box-shadow:0 0 0 6px rgba(16,185,129,.2);cursor:pointer;}
+        .center-pin.upcoming{background:#3b82f6;box-shadow:0 0 0 6px rgba(59,130,246,.2);}
+        .center-list{display:flex;flex-direction:column;gap:1rem;}
+        .center-card{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:1rem;cursor:pointer;transition:var(--transition);}
+        .center-card.active{border-color:var(--primary-green);box-shadow:0 8px 24px rgba(16,185,129,.15);}
+        @media (max-width:1024px){.rehab-map-grid{grid-template-columns:1fr;}}
+        .status-badge{display:inline-block;padding:0.2rem 0.6rem;border-radius:999px;font-size:.75rem;font-weight:600;}
+        .how-to-open-grid{display:grid;grid-template-columns:0.95fr 1.05fr;gap:2.5rem;align-items:start;}
+        .how-to-open-left h2{margin:0 0 1rem;text-align:left;}
+        .how-to-open-left .how-to-open-lead{margin:0;color:#475569;line-height:1.6;}
+        .how-to-open-right{position:relative;}
+        .center-timeline{position:relative;display:flex;flex-direction:column;gap:0;}
+        .timeline-level{position:relative;padding-bottom:1.5rem;}
+        .timeline-level:last-child{padding-bottom:0;}
+        .timeline-level::before{content:"";position:absolute;left:0;right:0;top:24px;height:2px;background:rgba(15,118,110,.2);z-index:0;}
+        .timeline-connector{width:2px;height:28px;background:rgba(15,118,110,.2);margin:0 auto;flex-shrink:0;}
+        .timeline-track{display:flex;flex-direction:row;justify-content:space-between;gap:0.75rem;position:relative;z-index:1;}
+        .timeline-item{flex:1;display:flex;flex-direction:column;align-items:center;min-width:0;}
+        .timeline-step{width:48px;height:48px;flex-shrink:0;border-radius:50%;background:rgba(16,185,129,.12);color:#0f766e;display:flex;align-items:center;justify-content:center;font-weight:700;border:2px solid rgba(16,185,129,.35);}
+        .timeline-card{width:100%;margin-top:1rem;background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:1rem 1.1rem;box-shadow:0 8px 20px rgba(15,118,110,.08);}
+        .timeline-card h3{margin:0 0 .35rem;font-size:.95rem;}
+        .timeline-card p{margin:0;color:#475569;font-size:.85rem;}
+        @media (max-width:1024px){
+            .how-to-open-grid{grid-template-columns:1fr;}
+            .how-to-open-left h2{text-align:center;}
+            .how-to-open-left .how-to-open-lead{text-align:center;}
+            .timeline-track{overflow-x:auto;overflow-y:visible;justify-content:flex-start;padding-bottom:.5rem;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}
+            .timeline-item{flex:0 0 180px;scroll-snap-align:start;}
+            .timeline-connector{margin:0 auto;}
+        }
+        @media (max-width:600px){
+            .timeline-level::before{top:20px;}
+            .timeline-step{width:40px;height:40px;font-size:.9rem;}
+            .timeline-item{flex:0 0 150px;}
+            .timeline-card{padding:.75rem .9rem;}
+            .timeline-card h3{font-size:.9rem;}
+        }
+        .core-services{max-width:1100px;margin:2rem auto 0;}
+        .core-services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+        .core-service-card{display:flex;flex-direction:column;gap:1rem;background:#fff;border-radius:16px;padding:1.5rem;border:1px solid #e2e8f0;box-shadow:0 4px 16px rgba(15,118,110,.06);transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease;position:relative;overflow:hidden;}
+        .core-service-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,#0d9488,#10b981);opacity:.9;}
+        .core-service-card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(15,118,110,.12);border-color:rgba(16,185,129,.25);}
+        .core-service-icon{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(13,148,136,.08));display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;}
+        .core-service-card h3{margin:0;font-size:1.1rem;color:#0f172a;}
+        .core-service-card p{margin:0;font-size:.9rem;color:#475569;line-height:1.5;}
+        @media (max-width:900px){.core-services-grid{grid-template-columns:repeat(2,1fr);}}
+        @media (max-width:560px){.core-services-grid{grid-template-columns:1fr;gap:1rem;}.core-service-card{padding:1.25rem;}}
+        .rehab-about{background:linear-gradient(180deg,#fff 0%,#f8fafc 100%);}
+        .rehab-about-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center;max-width:1100px;margin:0 auto;}
+        .rehab-about-content h2{margin:0 0 1rem;text-align:left;}
+        .rehab-about-lead{margin:0 0 1rem;font-size:1.05rem;line-height:1.7;color:#334155;}
+        .rehab-about-cta{margin-top:.5rem;}
+        .rehab-about-cta .btn{border-radius:999px;font-weight:600;}
+        .rehab-about-highlights{display:flex;flex-direction:column;gap:1rem;}
+        .rehab-about-item{display:flex;align-items:flex-start;gap:1rem;background:#fff;border-radius:16px;padding:1.1rem 1.35rem;border:1px solid #e2e8f0;box-shadow:0 4px 16px rgba(15,118,110,.06);transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;}
+        .rehab-about-item:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(15,118,110,.1);border-color:rgba(16,185,129,.2);}
+        .rehab-about-icon{width:44px;height:44px;flex-shrink:0;border-radius:12px;background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(13,148,136,.08));display:flex;align-items:center;justify-content:center;color:#0d9488;}
+        .rehab-about-item span{font-size:1rem;font-weight:600;color:#0f172a;}
+        @media (max-width:900px){
+            .rehab-about-grid{grid-template-columns:1fr;gap:2rem;}
+            .rehab-about-content h2{text-align:center;}
+            .rehab-about-lead{text-align:center;}
+            .rehab-about-cta{text-align:center;}
+        }
+        @media (max-width:560px){.rehab-about-item{padding:1rem 1.2rem;}.rehab-about-icon{width:40px;height:40px;}}
+        .collab-models-wrap{background:#f8fafc;}
+        .collab-models-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;max-width:1100px;margin:2rem auto 0;}
+        .collab-model-card{background:#fff;border-radius:20px;padding:1.5rem;border:1px solid #e2e8f0;box-shadow:0 4px 20px rgba(15,118,110,.06);transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease;display:flex;flex-direction:column;gap:1rem;}
+        .collab-model-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(15,118,110,.12);border-color:rgba(16,185,129,.25);}
+        .collab-model-header{display:flex;align-items:center;gap:1rem;}
+        .collab-model-icon{width:50px;height:50px;border-radius:14px;background:linear-gradient(135deg,rgba(16,185,129,.14),rgba(13,148,136,.08));display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;}
+        .collab-model-card h3{margin:0;font-size:1.1rem;color:#0f172a;line-height:1.3;}
+        .collab-model-split{display:grid;gap:.75rem;}
+        .collab-model-row{display:flex;flex-direction:column;gap:.25rem;padding:.75rem 1rem;border-radius:12px;background:#f8fafc;}
+        .collab-model-row--partner{border-left:3px solid #94a3b8;}
+        .collab-model-row--ncore{border-left:3px solid #10b981;}
+        .collab-model-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#64748b;}
+        .collab-model-text{margin:0;font-size:.9rem;color:#334155;line-height:1.45;}
+        @media (max-width:900px){.collab-models-grid{grid-template-columns:repeat(2,1fr);}}
+        @media (max-width:560px){.collab-models-grid{grid-template-columns:1fr;gap:1.25rem;}.collab-model-card{padding:1.25rem;}.collab-model-icon{width:44px;height:44px;font-size:1.2rem;}}
+        .hero.hero-rehab{display:block;min-height:auto;padding-top:100px;padding-bottom:3rem;background:#f8fafc;overflow:visible;}
+        .hero.hero-rehab::before,.hero.hero-rehab::after{display:none;}
+        .hero-rehab .container{max-width:1200px;margin:0 auto;padding:0 1.5rem;}
+        .hero-rehab-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center;min-height:480px;}
+        .hero-rehab-left{display:flex;flex-direction:column;gap:1.25rem;}
+        .hero-rehab-badge{display:flex;align-items:center;gap:.5rem;color:#64748b;font-size:.875rem;}
+        .hero-rehab-avatars{display:flex;}
+        .hero-rehab-avatars img{width:28px;height:28px;border-radius:50%;object-fit:cover;border:2px solid #fff;margin-left:-8px;}
+        .hero-rehab-avatars img:first-child{margin-left:0;}
+        .hero-rehab h1{margin:0;font-size:clamp(2rem,4vw,3rem);font-weight:800;line-height:1.15;color:#0f172a;text-align:left;}
+        .hero-rehab h1 .text-gradient{background:linear-gradient(135deg,#0d9488,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+        .hero-rehab-lead{margin:0;font-size:1rem;color:#475569;line-height:1.6;}
+        .hero-rehab-cta{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
+        .hero-rehab-cta .btn{padding:.6rem 1.4rem;border-radius:999px;font-weight:600;}
+        .hero-rehab-cta .btn-primary{background:#10b981;color:#fff;border:none;}
+        .hero-rehab-cta .btn-primary:hover{background:#0d9488;}
+        .hero-rehab-cta .btn-arrow{width:40px;height:40px;border-radius:50%;background:#10b981;color:#fff;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .2s;}
+        .hero-rehab-cta .btn-arrow:hover{transform:scale(1.05);}
+        .hero-rehab-cta .link-more{color:#0f172a;font-weight:600;display:inline-flex;align-items:center;gap:.35rem;}
+        .hero-rehab-cta .link-more:hover{color:#10b981;}
+        .hero-rehab-partners{margin-top:.5rem;}
+        .hero-rehab-partners h4{margin:0 0 .6rem;font-size:.8rem;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;}
+        .hero-rehab-partners-logos{display:flex;align-items:center;gap:1.25rem;}
+        .hero-rehab-partners-logos img{height:28px;width:auto;max-width:100px;object-fit:contain;}
+        .hero-rehab-partners-logos img:hover{filter:grayscale(0);opacity:1;}
+        .hero-rehab-right{position:relative;border-radius:20px;overflow:hidden;min-height:420px;}
+        .hero-rehab-image{position:absolute;inset:0;background:#134e4a;}
+        .hero-rehab-image img{width:100%;height:100%;object-fit:cover;}
+        .hero-rehab-image::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,118,110,.15) 0%,rgba(19,78,74,.5) 100%);pointer-events:none;}
+        .hero-rehab-overlay{position:absolute;inset:0;padding:1.5rem;display:flex;flex-direction:column;justify-content:space-between;pointer-events:none;}
+        .hero-rehab-overlay > *{pointer-events:auto;}
+        .hero-rehab-quote{background:rgba(255,255,255,.95);border-radius:16px;padding:1rem 1.25rem;max-width:260px;box-shadow:0 10px 30px rgba(0,0,0,.12);align-self:flex-start;display:flex;flex-direction:column;gap:.5rem;}
+        .hero-rehab-quote p{margin:0;font-size:.9rem;color:#334155;line-height:1.45;}
+        .hero-rehab-quote-avatar{width:32px;height:32px;border-radius:50%;object-fit:cover;align-self:flex-start;}
+        
+        .hero-rehab-cards{display:flex;justify-content:space-between;gap:1rem;align-items:flex-end;}
+        .hero-rehab-card{background:rgba(255,255,255,.95);border-radius:16px;padding:1rem 1.25rem;box-shadow:0 10px 30px rgba(0,0,0,.12);}
+        .hero-rehab-card--sm{max-width:180px;}
+        .hero-rehab-card--sm p{margin:0;font-size:.85rem;color:#334155;}
+        .hero-rehab-card--lg{max-width:220px;}
+        .hero-rehab-card--lg h4{margin:0 0 .35rem;font-size:1rem;}
+        .hero-rehab-card--lg p{margin:0;font-size:.8rem;color:#475569;line-height:1.4;}
+        .hero-rehab-card-avatars{display:flex;margin-top:.5rem;}
+        .hero-rehab-card-avatars img{width:24px;height:24px;border-radius:50%;object-fit:cover;border:2px solid #fff;margin-left:-6px;}
+        .hero-rehab-card-avatars img:first-child{margin-left:0;}
+        .hero-rehab-card-stat{font-size:1.1rem;font-weight:800;color:#10b981;margin-top:.25rem;}
+        @media (max-width:1024px){
+            .hero-rehab-grid{grid-template-columns:1fr;min-height:auto;gap:2rem;}
+            .hero-rehab-right{min-height:380px;order:-1;}
+            .hero-rehab h1{text-align:center;}
+            .hero-rehab-lead{text-align:center;}
+            .hero-rehab-cta{justify-content:center;}
+            .hero-rehab-badge{justify-content:center;}
+            .hero-rehab-partners{text-align:center;}
+            .hero-rehab-partners-logos{justify-content:center;}
+        }
+        @media (max-width:600px){
+            .hero-rehab-cards{flex-wrap:wrap;}
+            .hero-rehab-quote{max-width:100%;}
+            .hero-rehab-card--lg,.hero-rehab-card--sm{max-width:100%;}
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <a href="index.html" class="logo">
+                <img src="images/logo_b.png" alt="NCORE Logo" class="logo-img">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-dropdown">
+                    <a href="#" class="nav-link dropdown-toggle">
+                        What We Do?
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="rehab-center.html" class="dropdown-link">NCORE Rehibilation Center</a></li>
+                        <li><a href="https://digitaldetoxjunior.ncorefoundation.org/" class="dropdown-link" target="_blank" rel="noopener">Digital Detox Junior</a></li>
+                    </ul>
+                </li>
+                <li class="nav-dropdown">
+                    <a href="#" class="nav-link dropdown-toggle">
+                        About Us
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="index.html#about" class="dropdown-link">About Us</a></li>
+                        <li><a href="our-team.html" class="dropdown-link">Our Team</a></li>
+                        <li><a href="careers.html" class="dropdown-link">Careers</a></li>
+                    </ul>
+                </li>
+                <!--<li class="nav-dropdown">
+                    <a href="media-center.html" class="nav-link">
+                        Media Centre
+                    </a>
+                    
+                </li>-->
+
+                <li>
+                    <a href="contact.html" class="nav-link">Contact Us</a>
+                </li>
+
+                <li class="nav-cta">
+                    <a href="https://toolkit.ncorefoundation.org/" class="btn btn-donate">Cyber Safe Toolkit</a>
+                </li>
+            </ul>
+            <button class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero hero-rehab">
+        <div class="container">
+            <div class="hero-rehab-grid">
+                <div class="hero-rehab-left">
+                   
+                    <h1>Together for <span class="text-gradient">recovery and</span> reintegration</h1>
+                    <p class="hero-rehab-lead">Structured rehabilitation, community reintegration, and long-term support for individuals and families affected by cyber harm. Help us bring hope and restore dignity.</p>
+                    <div class="hero-rehab-cta">
+                        <a href="#collab-form" class="btn btn-primary">Collaborate With Us</a>
+                        <a href="#center-map" class="link-more">Explore Our Centers →</a>
+                    </div>
+                    <div class="hero-rehab-partners">
+                        <h4>Our most loved partners</h4>
+                        <div class="hero-rehab-partners-logos">
+                            <img src="images/partners/Bytecys.png" alt="Bytecys">
+                            <img src="images/partners/crevato.png" alt="Crevato">
+                            <img src="images/partners/CSI.png" alt="CSI">
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-rehab-right">
+                    <div class="hero-rehab-image">
+                        <img src="images/WhatsApp Image 2025-09-19 at 12.19.07 PM (1).jpeg" alt="NCORE rehabilitation and community impact">
+                    </div>
+                    <div class="hero-rehab-overlay">
+                        <div class="hero-rehab-quote">
+                            <p>"Because of NCORE, I was given hope and a second chance at recovery."</p>
+                            <img src="images/team/ritu.png" alt="" class="hero-rehab-quote-avatar">
+                        </div>
+                        <div class="hero-rehab-cards">
+                            <div class="hero-rehab-card hero-rehab-card--sm">
+                                <p>Real lives changed by your support</p>
+                            </div>
+                            <div class="hero-rehab-card hero-rehab-card--lg">
+                                <h4>Dedicated team</h4>
+                                <p>Providing essential resources and rehabilitation to those affected by cyber harm.</p>
+                                <div class="hero-rehab-card-avatars">
+                                    <img src="images/team/vinay.png" alt="">
+                                    <img src="images/team/atharv.png" alt="">
+                                    <img src="images/team/avani.png" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About the Program -->
+    <section class="section rehab-about">
+        <div class="container">
+            <div class="rehab-about-grid">
+                <div class="rehab-about-content">
+                    <h2>About the <span class="text-gradient">Program</span></h2>
+                    <p class="rehab-about-lead">NCORE Rehabilitation Centers deliver structured rehabilitation for cyber harm survivors by combining counseling, legal guidance, digital recovery, and long-term reintegration support. We work with institutions, CSR partners, and government stakeholders to establish centers that restore dignity and create sustainable pathways to recovery.</p>
+                    <div class="rehab-about-cta">
+                        <a href="#collab-form" class="btn btn-primary">Collaborate With Us</a>
+                    </div>
+                </div>
+                <div class="rehab-about-highlights">
+                    <div class="rehab-about-item">
+                        <div class="rehab-about-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                        </div>
+                        <span>Structured rehabilitation framework</span>
+                    </div>
+                    <div class="rehab-about-item">
+                        <div class="rehab-about-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                        </div>
+                        <span>Counseling and wellness support</span>
+                    </div>
+                    <div class="rehab-about-item">
+                        <div class="rehab-about-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                        </div>
+                        <span>Skill development and livelihood enablement</span>
+                    </div>
+                    <div class="rehab-about-item">
+                        <div class="rehab-about-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                        </div>
+                        <span>Community reintegration</span>
+                    </div>
+                    <div class="rehab-about-item">
+                        <div class="rehab-about-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                        </div>
+                        <span>Long-term follow-up</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Services -->
+    <section class="section" style="background: #f8fafc;">
+        <div class="container">
+            <h2 class="text-center">Core <span class="text-gradient">Services</span></h2>
+            <div class="core-services">
+                <div class="core-services-grid">
+                    <div class="core-service-card">
+                        <div class="core-service-icon">🧠</div>
+                        <h3>Counseling & Mental Wellness</h3>
+                        <p>Trauma-informed care and structured mental health support for recovery.</p>
+                    </div>
+                    <div class="core-service-card">
+                        <div class="core-service-icon">🏥</div>
+                        <h3>Medical Support & Referrals</h3>
+                        <p>Access to medical assessments and specialist referrals when required.</p>
+                    </div>
+                    <div class="core-service-card">
+                        <div class="core-service-icon">💼</div>
+                        <h3>Skill Development</h3>
+                        <p>Digital and professional skills to rebuild confidence and employability.</p>
+                    </div>
+                    <div class="core-service-card">
+                        <div class="core-service-icon">🧰</div>
+                        <h3>Vocational Training</h3>
+                        <p>Hands-on livelihood enablement aligned with local opportunities.</p>
+                    </div>
+                    <div class="core-service-card">
+                        <div class="core-service-icon">⚖️</div>
+                        <h3>Legal & Social Support</h3>
+                        <p>Guided legal aid, reporting assistance, and social rehabilitation.</p>
+                    </div>
+                    <div class="core-service-card">
+                        <div class="core-service-icon">🤝</div>
+                        <h3>Reintegration & Aftercare</h3>
+                        <p>Structured follow-up and community reintegration pathways.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Collaboration Models -->
+    <section class="section collab-models-wrap">
+        <div class="container">
+            <h2 class="text-center">Collaboration <span class="text-gradient">Models</span></h2>
+            <p class="text-center" style="max-width:600px;margin:.5rem auto 0;color:#64748b;">Choose how you’d like to partner with us. Each model outlines what you bring and what NCORE delivers.</p>
+            <div class="collab-models-grid">
+                <div class="collab-model-card">
+                    <div class="collab-model-header">
+                        <div class="collab-model-icon">🏢</div>
+                        <h3>CSR Partnership</h3>
+                    </div>
+                    <div class="collab-model-split">
+                        <div class="collab-model-row collab-model-row--partner">
+                            <span class="collab-model-label">Partner provides</span>
+                            <p class="collab-model-text">Funding, infrastructure, and scale support.</p>
+                        </div>
+                        <div class="collab-model-row collab-model-row--ncore">
+                            <span class="collab-model-label">NCORE provides</span>
+                            <p class="collab-model-text">Program design, operations, impact reporting.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="collab-model-card">
+                    <div class="collab-model-header">
+                        <div class="collab-model-icon">🎓</div>
+                        <h3>Institution / University Partnership</h3>
+                    </div>
+                    <div class="collab-model-split">
+                        <div class="collab-model-row collab-model-row--partner">
+                            <span class="collab-model-label">Partner provides</span>
+                            <p class="collab-model-text">Campus space and institutional access.</p>
+                        </div>
+                        <div class="collab-model-row collab-model-row--ncore">
+                            <span class="collab-model-label">NCORE provides</span>
+                            <p class="collab-model-text">Counseling, training, and rehabilitation workflows.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="collab-model-card">
+                    <div class="collab-model-header">
+                        <div class="collab-model-icon">🏛️</div>
+                        <h3>Government Collaboration</h3>
+                    </div>
+                    <div class="collab-model-split">
+                        <div class="collab-model-row collab-model-row--partner">
+                            <span class="collab-model-label">Partner provides</span>
+                            <p class="collab-model-text">Policy alignment, referrals, local governance support.</p>
+                        </div>
+                        <div class="collab-model-row collab-model-row--ncore">
+                            <span class="collab-model-label">NCORE provides</span>
+                            <p class="collab-model-text">Delivery framework, capacity building, reporting.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="collab-model-card">
+                    <div class="collab-model-header">
+                        <div class="collab-model-icon">🤝</div>
+                        <h3>NGO Partnership</h3>
+                    </div>
+                    <div class="collab-model-split">
+                        <div class="collab-model-row collab-model-row--partner">
+                            <span class="collab-model-label">Partner provides</span>
+                            <p class="collab-model-text">Community outreach and local networks.</p>
+                        </div>
+                        <div class="collab-model-row collab-model-row--ncore">
+                            <span class="collab-model-label">NCORE provides</span>
+                            <p class="collab-model-text">Structured rehabilitation and training modules.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="collab-model-card">
+                    <div class="collab-model-header">
+                        <div class="collab-model-icon">❤️</div>
+                        <h3>Local Sponsor / Donor Partnership</h3>
+                    </div>
+                    <div class="collab-model-split">
+                        <div class="collab-model-row collab-model-row--partner">
+                            <span class="collab-model-label">Partner provides</span>
+                            <p class="collab-model-text">Sponsorship, equipment, or operational support.</p>
+                        </div>
+                        <div class="collab-model-row collab-model-row--ncore">
+                            <span class="collab-model-label">NCORE provides</span>
+                            <p class="collab-model-text">Program governance and outcome tracking.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- India Map + Centers -->
+    <section id="center-map" class="section" style="background: #f8fafc;">
+        <div class="container">
+            <h2 class="text-center">Our Presence in <span class="text-gradient">India</span></h2>
+            <p class="text-center" style="max-width: 720px; margin: 0 auto 2rem;">Locations of NCORE Rehabilitation Centers—active and upcoming. Click a pin or a center in the list for details.</p>
+
+            <div class="rehab-map-grid">
+                <div class="india-map" aria-label="India map with center locations">
+                    <div id="indiaMap"></div>
+                </div>
+                <div>
+                    <div style="display: grid; gap: 1rem;">
+                        <input id="centerSearch" type="text" class="form-input" placeholder="Search by city or name">
+                        <select id="statusFilter" class="form-input">
+                            <option value="all">All (Active & Upcoming)</option>
+                            <option value="Active">Active</option>
+                            <option value="Upcoming">Upcoming</option>
+                        </select>
+                    </div>
+                    <div id="centerList" class="center-list" style="margin-top: 1.5rem;">
+                        <div class="center-card">
+                            <strong>NCORE Rehabilitation Center - Indore</strong>
+                            <p style="margin: 0.35rem 0 0;">Indore, Madhya Pradesh</p>
+                            <span class="status-badge" style="background: rgba(16,185,129,0.15); color: #047857;">Active</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data format expectation:
+            const rehabCenters = [
+              { id: 1, name: "...", city: "...", state: "...", status: "Active", lat: 0, lng: 0 }
+            ];
+            -->
+        </div>
+    </section>
+
+    <!-- How to Open a Center -->
+    <section class="section">
+        <div class="container">
+            <div class="how-to-open-grid">
+                <div class="how-to-open-left">
+                    <h2>How to Open a Center <span class="text-gradient">With Us</span></h2>
+                    <p class="how-to-open-lead">Follow a clear, step-by-step process to establish an NCORE Rehabilitation Center with your organization. We guide you from initial discussion through launch and community outreach.</p>
+                </div>
+                <div class="how-to-open-right">
+                    <div class="center-timeline">
+                        <div class="timeline-level">
+                            <div class="timeline-track">
+                                <div class="timeline-item">
+                                    <div class="timeline-step">1</div>
+                                    <div class="timeline-card">
+                                        <h3>Intro Call & Requirement Mapping</h3>
+                                        <p>Align objectives, geography, and partner capabilities.</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-step">2</div>
+                                    <div class="timeline-card">
+                                        <h3>Partner Evaluation</h3>
+                                        <p>Assess feasibility, infrastructure, and compliance needs.</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-step">3</div>
+                                    <div class="timeline-card">
+                                        <h3>Proposal + MoU</h3>
+                                        <p>Finalize scope, deliverables, and operating model.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-connector" aria-hidden="true"></div>
+                        <div class="timeline-level">
+                            <div class="timeline-track">
+                                <div class="timeline-item">
+                                    <div class="timeline-step">4</div>
+                                    <div class="timeline-card">
+                                        <h3>Setup & Recruitment</h3>
+                                        <p>Build the team, tools, and local partnerships.</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-step">5</div>
+                                    <div class="timeline-card">
+                                        <h3>Operations + Monitoring</h3>
+                                        <p>Activate programs and measure outcomes.</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-step">6</div>
+                                    <div class="timeline-card">
+                                        <h3>Launch & Outreach</h3>
+                                        <p>Public launch with community engagement.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Collaboration Request Form -->
+    <section id="collab-form" class="section" style="background: #f8fafc;">
+        <div class="container">
+            <h2 class="text-center">Collaboration <span class="text-gradient">Request</span></h2>
+            <p class="text-center" style="max-width: 700px; margin: 0 auto 2rem;">Share your details and our team will reach out to explore how we can establish a rehabilitation center together.</p>
+            <form id="collaborationForm" class="contact-form" style="max-width: 900px; margin: 0 auto;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="collab-name">Full Name *</label>
+                        <input type="text" id="collab-name" name="name" required class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="collab-org">Organization Name *</label>
+                        <input type="text" id="collab-org" name="organization" required class="form-input">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="collab-email">Email *</label>
+                        <input type="email" id="collab-email" name="email" required class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="collab-phone">Phone *</label>
+                        <input type="tel" id="collab-phone" name="phone" required class="form-input">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="collab-city">City *</label>
+                        <input type="text" id="collab-city" name="city" required class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="collab-state">State *</label>
+                        <input type="text" id="collab-state" name="state" required class="form-input">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="collab-type">Type of Collaboration *</label>
+                        <select id="collab-type" name="type" required class="form-input">
+                            <option value="">Select</option>
+                            <option value="csr">CSR Partnership</option>
+                            <option value="institution">Institution / University Partnership</option>
+                            <option value="government">Government Collaboration</option>
+                            <option value="ngo">NGO Partnership</option>
+                            <option value="donor">Local Sponsor / Donor</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="collab-message">Message *</label>
+                        <textarea id="collab-message" name="message" rows="4" required class="form-input" placeholder="Tell us about your collaboration goals."></textarea>
+                    </div>
+                </div>
+                <div class="form-actions" style="text-align: center; margin-top: 1.5rem;">
+                    <button type="submit" class="btn btn-primary">Submit Collaboration Request</button>
+                </div>
+                <p id="collabSuccess" style="display:none; text-align:center; margin-top:1rem; color:#10b981; font-weight:600;">Thank you. Your request has been received.</p>
+            </form>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section">
+        <div class="container">
+            <h2 class="text-center">Frequently Asked <span class="text-gradient">Questions</span></h2>
+            <div style="max-width: 900px; margin: 2rem auto 0;">
+                <div class="faq-item">
+                    <div class="faq-question">What is the minimum requirement to open a center? <button class="faq-toggle">+</button></div>
+                    <div class="faq-answer">We typically require a committed local partner, suitable infrastructure, and alignment with our rehabilitation framework.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">How long does the setup take? <button class="faq-toggle">+</button></div>
+                    <div class="faq-answer">Setup timelines vary by location and partner readiness, typically between 8–16 weeks.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Can district administrations collaborate? <button class="faq-toggle">+</button></div>
+                    <div class="faq-answer">Yes. We regularly collaborate with government departments for referrals, outreach, and infrastructure support.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Do you provide operational support? <button class="faq-toggle">+</button></div>
+                    <div class="faq-answer">NCORE provides operating protocols, training, and ongoing monitoring for center operations.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Can we sponsor only one center? <button class="faq-toggle">+</button></div>
+                    <div class="faq-answer">Absolutely. Sponsors can support individual centers with localized impact reporting.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">How do you measure impact? <button class="faq-toggle">+</button></div>
+                    <div class="faq-answer">Impact is tracked through rehabilitation outcomes, reintegration metrics, and program reporting.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Center Details Modal -->
+    <div id="centerDetailsModal" class="modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="modal-icon">📍</div>
+                <h2 class="modal-title" id="centerModalTitle">Center Details</h2>
+                <button class="modal-close" aria-label="Close modal">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-content">
+                <p id="centerModalLocation"></p>
+                <p id="centerModalStatus"></p>
+                <p id="centerModalContact">Contact: rehab@ncorefoundation.org | +91 7000000000</p>
+                <div class="modal-actions">
+                    <button class="btn btn-primary" id="centerDetailsBtn">Get Details</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>NCORE</h3>
+                    <p>Network for Cyber Online Rehabilitation and Empowerment</p>
+                    <p>Building a safer digital world through education, collaboration, and innovation.</p>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/ncore.foundation/" class="social-link" aria-label="Instagram"><svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+  <path fill="currentColor" fill-rule="evenodd" d="M3 8a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8Zm5-3a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V8a3 3 0 0 0-3-3H8Zm7.597 2.214a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2h-.01a1 1 0 0 1-1-1ZM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm-5 3a5 5 0 1 1 10 0 5 5 0 0 1-10 0Z" clip-rule="evenodd"/>
+</svg></a>
+                        <a href="https://www.linkedin.com/company/network-for-cyber-online-rehabilitation-empowerment/" class="social-link" aria-label="LinkedIn"><svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.213 9.787a3.391 3.391 0 0 0-4.795 0l-3.425 3.426a3.39 3.39 0 0 0 4.795 4.794l.321-.304m-.321-4.49a3.39 3.39 0 0 0 4.795 0l3.424-3.426a3.39 3.39 0 0 0-4.794-4.795l-1.028.961"/>
+</svg>
+</a>
+                        <a href="https://www.facebook.com/people/NCORE-Foundation/61578747959138/" class="social-link" aria-label="Facebook"><svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+  <path fill-rule="evenodd" d="M13.135 6H15V3h-1.865a4.147 4.147 0 0 0-4.142 4.142V9H7v3h2v9.938h3V12h2.021l.592-3H12V6.591A.6.6 0 0 1 12.592 6h.543Z" clip-rule="evenodd"/>
+</svg>
+</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="index.html#about">About Us</a>
+                     
+                    <a href="contact.html">Contact</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p>📍 T-11, 1106, Amolik Sankalp, Sector-85, Faridabad, Haryana-121003</p>
+                    <p>📧 contact@ncorefoundation.org</p>
+                    <p>📞 +917011433575</p>
+                    <p>📞 +919567651299</p>
+                    <p>🕒 Mon-Fri: 9:00 AM - 6:00 PM</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 NCORE. All rights reserved. | Privacy Policy | Terms of Service</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const rehabCenters = [
+                { id: 1, name: "NCORE Rehabilitation Center - Delhi NCR", city: "Delhi NCR", state: "Delhi", status: "Active", lat: 28.542095, lng: 77.176956 },
+                { id: 2, name: "NCORE Rehabilitation Center - Thiruvananthapuram", city: "Thiruvananthapuram", state: "Kerala", status: "Upcoming", lat: 8.499171, lng: 76.960040 }
+            ];
+
+            const mapEl = document.getElementById('indiaMap');
+            const listEl = document.getElementById('centerList');
+            const searchEl = document.getElementById('centerSearch');
+            const filterEl = document.getElementById('statusFilter');
+            const modal = document.getElementById('centerDetailsModal');
+            const modalTitle = document.getElementById('centerModalTitle');
+            const modalLocation = document.getElementById('centerModalLocation');
+            const modalStatus = document.getElementById('centerModalStatus');
+            const detailBtn = document.getElementById('centerDetailsBtn');
+            let map;
+            let markers = [];
+
+            function initMap() {
+                if (!mapEl || typeof L === 'undefined') return;
+                map = L.map(mapEl, {
+                    scrollWheelZoom: false
+                }).setView([22.0, 78.0], 4);
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap contributors'
+                }).addTo(map);
+
+                markers = rehabCenters.map(center => {
+                    const isUpcoming = center.status === 'Upcoming';
+                    const marker = L.circleMarker([center.lat, center.lng], {
+                        radius: 7,
+                        color: isUpcoming ? '#3b82f6' : '#10b981',
+                        fillColor: isUpcoming ? '#3b82f6' : '#10b981',
+                        fillOpacity: 0.9,
+                        weight: 2
+                    }).addTo(map);
+                    marker.on('click', () => openCenter(center));
+                    center._marker = marker;
+                    return marker;
+                });
+
+                if (markers.length > 1) {
+                    const group = L.featureGroup(markers);
+                    map.fitBounds(group.getBounds().pad(0.5));
+                }
+            }
+
+            function renderCenters() {
+                const query = (searchEl.value || '').toLowerCase();
+                const statusFilter = filterEl.value;
+                listEl.innerHTML = '';
+
+                rehabCenters
+                    .filter(center => {
+                        const matchesQuery = center.name.toLowerCase().includes(query) || center.city.toLowerCase().includes(query) || center.state.toLowerCase().includes(query);
+                        const matchesStatus = statusFilter === 'all' || center.status === statusFilter;
+                        return matchesQuery && matchesStatus;
+                    })
+                    .forEach(center => {
+                        const card = document.createElement('div');
+                        card.className = 'center-card';
+                        card.innerHTML = `
+                            <strong>${center.name}</strong>
+                            <p style="margin: 0.35rem 0 0;">${center.city}, ${center.state}</p>
+                            <span class="status-badge" style="background: ${center.status === 'Active' ? 'rgba(16,185,129,0.15)' : 'rgba(59,130,246,0.15)'}; color: ${center.status === 'Active' ? '#047857' : '#1d4ed8'};">${center.status}</span>
+                        `;
+                        card.addEventListener('click', () => openCenter(center));
+                        listEl.appendChild(card);
+                    });
+            }
+
+            function openCenter(center) {
+                listEl.querySelectorAll('.center-card').forEach(card => {
+                    card.classList.toggle('active', card.querySelector('strong').textContent === center.name);
+                });
+                if (center._marker && map) {
+                    map.setView([center.lat, center.lng], Math.max(map.getZoom(), 6), { animate: true });
+                }
+                modalTitle.textContent = center.name;
+                modalLocation.textContent = `${center.city}, ${center.state}`;
+                modalStatus.textContent = `Status: ${center.status}`;
+                if (modal && typeof openModal === 'function') {
+                    openModal(modal);
+                } else if (modal) {
+                    modal.classList.add('active');
+                }
+                detailBtn.onclick = () => window.location.href = 'contact.html';
+            }
+
+            searchEl.addEventListener('input', renderCenters);
+            filterEl.addEventListener('change', renderCenters);
+            initMap();
+            renderCenters();
+
+            const collabForm = document.getElementById('collaborationForm');
+            const successMsg = document.getElementById('collabSuccess');
+            collabForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                if (!collabForm.checkValidity()) {
+                    collabForm.reportValidity();
+                    return;
+                }
+                successMsg.style.display = 'block';
+                collabForm.reset();
+            });
+        });
+    </script>
+</body>
+</html>

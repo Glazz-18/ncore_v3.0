@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Center - NCORE Foundation</title>
+    <meta name="description" content="Stories, coverage, and updates from NCORE Foundation. News, press releases, media appearances, and photo highlights.">
+    <meta name="keywords" content="NCORE media, press releases, news coverage, cyber rehabilitation news, NCORE foundation updates">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <style>
+        .media-hero{background:linear-gradient(135deg,#f8fafc 0%,#e2e8f0 100%);padding:4rem 0 3rem;margin-top:70px;}
+        .breadcrumb{display:flex;align-items:center;gap:.5rem;font-size:.875rem;color:#64748b;margin-bottom:1.5rem;}
+        .breadcrumb a{color:#64748b;text-decoration:none;}
+        .breadcrumb a:hover{color:#10b981;}
+        .breadcrumb span{color:#94a3b8;}
+        .media-stats-strip{background:#fff;border-radius:16px;padding:1.5rem 2rem;box-shadow:0 4px 16px rgba(15,118,110,.06);display:flex;justify-content:space-around;align-items:center;flex-wrap:wrap;gap:1.5rem;margin:2rem 0;}
+        .media-stat{text-align:center;}
+        .media-stat-number{font-size:2rem;font-weight:800;color:#10b981;display:block;}
+        .media-stat-label{font-size:.875rem;color:#64748b;margin-top:.25rem;}
+        .featured-carousel-wrapper{position:relative;margin:2rem 0;}
+        .featured-carousel-track{display:flex;gap:1.5rem;overflow:hidden;}
+        .featured-card{min-width:100%;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 8px 24px rgba(15,118,110,.1);display:grid;grid-template-columns:1fr 1fr;gap:0;}
+        .featured-card-image{position:relative;min-height:320px;background:#e2e8f0;}
+        .featured-card-image img{width:100%;height:100%;object-fit:cover;}
+        .featured-card-content{padding:2rem;display:flex;flex-direction:column;justify-content:center;}
+        .featured-card-source{font-size:.75rem;font-weight:600;text-transform:uppercase;color:#10b981;letter-spacing:.5px;margin-bottom:.5rem;}
+        .featured-card-title{font-size:1.5rem;font-weight:700;color:#0f172a;margin:0 0 1rem;line-height:1.3;}
+        .featured-card-excerpt{color:#475569;line-height:1.6;margin-bottom:1.5rem;}
+        .featured-card-date{font-size:.875rem;color:#94a3b8;margin-bottom:1rem;}
+        .news-filter-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin:1.5rem 0;justify-content:center;}
+        .filter-tab{padding:.6rem 1.2rem;border-radius:999px;border:1px solid #e2e8f0;background:#fff;color:#64748b;font-weight:600;cursor:pointer;transition:all .2s;}
+        .filter-tab.active,.filter-tab:hover{background:#10b981;color:#fff;border-color:#10b981;}
+        .news-search{max-width:400px;margin:1rem auto 2rem;}
+        .news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2rem;}
+        .news-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 16px rgba(15,118,110,.06);transition:transform .2s,box-shadow .2s;}
+        .news-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(15,118,110,.12);}
+        .news-card-image{width:100%;height:200px;background:#e2e8f0;overflow:hidden;}
+        .news-card-image img{width:100%;height:100%;object-fit:cover;}
+        .news-card-content{padding:1.25rem;}
+        .news-card-tag{display:inline-block;padding:.25rem .6rem;border-radius:999px;font-size:.7rem;font-weight:600;background:rgba(16,185,129,.1);color:#047857;margin-bottom:.5rem;}
+        .news-card-title{font-size:1rem;font-weight:600;color:#0f172a;margin:0 0 .5rem;line-height:1.4;}
+        .news-card-meta{font-size:.8rem;color:#94a3b8;margin-bottom:.75rem;}
+        .newspaper-carousel-wrapper{position:relative;margin:2rem 0;}
+        .newspaper-carousel-track{display:flex;gap:1rem;overflow:hidden;}
+        .newspaper-thumb{min-width:280px;border-radius:12px;overflow:hidden;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.1);transition:transform .2s;}
+        .newspaper-thumb:hover{transform:scale(1.02);}
+        .newspaper-thumb img{width:100%;height:auto;display:block;}
+        .video-carousel-wrapper{position:relative;margin:2rem 0;}
+        .video-carousel-track{display:flex;gap:1.5rem;overflow:hidden;}
+        .video-card{min-width:320px;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 16px rgba(15,118,110,.06);}
+        .video-card-embed{position:relative;width:100%;padding-bottom:56.25%;background:#000;}
+        .video-card-embed iframe{position:absolute;top:0;left:0;width:100%;height:100%;}
+        .video-card-placeholder{position:absolute;inset:0;background:linear-gradient(135deg,#0d9488,#10b981);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+        .video-card-placeholder svg{width:64px;height:64px;color:#fff;opacity:.9;}
+        .video-card-content{padding:1rem;}
+        .video-card-title{font-size:.95rem;font-weight:600;color:#0f172a;margin:0 0 .25rem;}
+        .video-card-meta{font-size:.8rem;color:#94a3b8;}
+        .gallery-masonry{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin:2rem 0;}
+        .gallery-item{position:relative;border-radius:12px;overflow:hidden;cursor:pointer;aspect-ratio:1;background:#e2e8f0;}
+        .gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .3s;}
+        .gallery-item:hover img{transform:scale(1.05);}
+        .press-releases-table{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 16px rgba(15,118,110,.06);margin:2rem 0;}
+        .press-row{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:1.5rem;padding:1.25rem 1.5rem;border-bottom:1px solid #e2e8f0;align-items:center;}
+        .press-row:last-child{border-bottom:none;}
+        .press-row-title{font-weight:600;color:#0f172a;}
+        .press-row-date,.press-row-category{color:#64748b;font-size:.9rem;}
+        .media-contact-cta{background:linear-gradient(135deg,#0d9488,#10b981);border-radius:20px;padding:3rem 2rem;text-align:center;color:#fff;margin:3rem 0;}
+        .media-contact-cta h3{color:#fff;margin:0 0 1rem;}
+        .media-contact-cta p{color:rgba(255,255,255,.9);margin:0 0 1.5rem;max-width:600px;margin-left:auto;margin-right:auto;}
+        .media-contact-info{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin:1.5rem 0;}
+        .media-contact-item{display:flex;align-items:center;gap:.5rem;}
+        .carousel-btn{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;background:#fff;border:1px solid #e2e8f0;box-shadow:0 4px 12px rgba(0,0,0,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;transition:all .2s;}
+        .carousel-btn:hover{background:#10b981;color:#fff;border-color:#10b981;}
+        .carousel-btn.prev{left:-24px;}
+        .carousel-btn.next{right:-24px;}
+        .carousel-indicators{display:flex;justify-content:center;gap:.5rem;margin-top:1.5rem;}
+        .carousel-indicator{width:10px;height:10px;border-radius:50%;background:#cbd5e1;border:none;cursor:pointer;transition:all .2s;}
+        .carousel-indicator.active{background:#10b981;width:24px;border-radius:999px;}
+        .lightbox-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:9999;align-items:center;justify-content:center;padding:2rem;}
+        .lightbox-modal.active{display:flex;}
+        .lightbox-content{position:relative;max-width:90vw;max-height:90vh;}
+        .lightbox-content img{max-width:100%;max-height:90vh;object-fit:contain;border-radius:8px;}
+        .lightbox-close{position:absolute;top:-40px;right:0;background:#fff;border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:#0f172a;}
+        .lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;}
+        .lightbox-nav.prev{left:-60px;}
+        .lightbox-nav.next{right:-60px;}
+        @media (max-width:1024px){
+            .featured-card{grid-template-columns:1fr;}
+            .news-grid{grid-template-columns:repeat(2,1fr);}
+            .carousel-btn{display:none;}
+            .lightbox-nav{display:none;}
+        }
+        @media (max-width:600px){
+            .news-grid{grid-template-columns:1fr;}
+            .media-stats-strip{flex-direction:column;gap:1rem;}
+            .press-row{grid-template-columns:1fr;gap:.75rem;}
+            .media-contact-info{flex-direction:column;gap:1rem;}
+            .gallery-masonry{grid-template-columns:repeat(2,1fr);}
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <a href="index.html" class="logo">
+                <img src="images/logo_b.png" alt="NCORE Logo" class="logo-img">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-dropdown">
+                    <a href="#" class="nav-link dropdown-toggle">
+                        What We Do?
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="rehab-center.html" class="dropdown-link">NCORE Rehibilation Center</a></li>
+                        <li><a href="https://digitaldetoxjunior.ncorefoundation.org/" class="dropdown-link" target="_blank" rel="noopener">Digital Detox Junior</a></li>
+                    </ul>
+                </li>
+                <li class="nav-dropdown">
+                    <a href="#" class="nav-link dropdown-toggle">
+                        About Us
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="index.html#about" class="dropdown-link">About Us</a></li>
+                        <li><a href="our-team.html" class="dropdown-link">Our Team</a></li>
+                        <li><a href="careers.html" class="dropdown-link">Careers</a></li>
+                    </ul>
+                </li>
+                <!--<li class="nav-dropdown">
+                    <a href="media-center.html" class="nav-link">
+                        Media Centre
+                    </a>
+                    
+                </li>-->
+
+                <li>
+                    <a href="contact.html" class="nav-link">Contact Us</a>
+                </li>
+
+                <li class="nav-cta">
+                    <a href="https://toolkit.ncorefoundation.org/" class="btn btn-donate">Cyber Safe Toolkit</a>
+                </li>
+            </ul>
+            <button class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="media-hero">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html">Home</a>
+                <span>/</span>
+                <span>Media Center</span>
+            </div>
+            <div class="hero-content" style="text-align: left; max-width: 800px;">
+                <h1>Media <span class="text-gradient">Center</span></h1>
+                <p class="hero-subtitle" style="text-align: left; margin: 1rem 0 2rem;">Stories, coverage, and updates from NCORE Foundation</p>
+                <div class="hero-buttons" style="justify-content: flex-start;">
+                    <a href="#latest-news" class="btn btn-primary">View Latest News</a>
+                    <a href="#press-releases" class="btn btn-outline">Download Press Kit</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Media Stats Strip -->
+    <section class="section" style="padding-top: 0;">
+        <div class="container">
+            <div class="media-stats-strip">
+                <div class="media-stat">
+                    <span class="media-stat-number">120+</span>
+                    <span class="media-stat-label">News Mentions</span>
+                </div>
+                <div class="media-stat">
+                    <span class="media-stat-number">35+</span>
+                    <span class="media-stat-label">Events Covered</span>
+                </div>
+                <div class="media-stat">
+                    <span class="media-stat-number">60+</span>
+                    <span class="media-stat-label">Print Features</span>
+                </div>
+                <div class="media-stat">
+                    <span class="media-stat-number">15+</span>
+                    <span class="media-stat-label">Press Releases</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Coverage Carousel -->
+    <section class="section" style="background: #f8fafc;">
+        <div class="container">
+            <h2 class="text-center">Featured <span class="text-gradient">Coverage</span></h2>
+            <div class="featured-carousel-wrapper">
+                <button class="carousel-btn prev featured-prev" aria-label="Previous">‹</button>
+                <div class="featured-carousel-track" id="featuredCarousel">
+                    <!-- Dynamically populated -->
+                </div>
+                <button class="carousel-btn next featured-next" aria-label="Next">›</button>
+                <div class="carousel-indicators" id="featuredIndicators"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest News -->
+    <section id="latest-news" class="section">
+        <div class="container">
+            <h2 class="text-center">Latest <span class="text-gradient">News</span></h2>
+            <div class="news-filter-tabs">
+                <button class="filter-tab active" data-filter="all">All</button>
+                <button class="filter-tab" data-filter="news">News</button>
+                <button class="filter-tab" data-filter="events">Events</button>
+                <button class="filter-tab" data-filter="csr">CSR</button>
+                <button class="filter-tab" data-filter="awareness">Awareness Sessions</button>
+            </div>
+            <div class="news-search">
+                <input type="text" class="form-input" placeholder="Search news..." id="newsSearch">
+            </div>
+            <div class="news-grid" id="newsGrid">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Newspaper Cuttings -->
+    <section class="section" style="background: #f8fafc;">
+        <div class="container">
+            <h2 class="text-center">Newspaper <span class="text-gradient">Cuttings</span></h2>
+            <div class="newspaper-carousel-wrapper">
+                <button class="carousel-btn prev newspaper-prev" aria-label="Previous">‹</button>
+                <div class="newspaper-carousel-track" id="newspaperCarousel">
+                    <!-- Dynamically populated -->
+                </div>
+                <button class="carousel-btn next newspaper-next" aria-label="Next">›</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Highlights -->
+    <section class="section">
+        <div class="container">
+            <h2 class="text-center">Video <span class="text-gradient">Highlights</span></h2>
+            <div class="video-carousel-wrapper">
+                <button class="carousel-btn prev video-prev" aria-label="Previous">‹</button>
+                <div class="video-carousel-track" id="videoCarousel">
+                    <!-- Dynamically populated -->
+                </div>
+                <button class="carousel-btn next video-next" aria-label="Next">›</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Photo Gallery Highlights -->
+    <section class="section" style="background: #f8fafc;">
+        <div class="container">
+            <h2 class="text-center">Gallery <span class="text-gradient">Highlights</span></h2>
+            <div class="gallery-masonry" id="galleryMasonry">
+                <!-- Dynamically populated -->
+            </div>
+            <h3 class="text-center" style="margin-top: 3rem; margin-bottom: 1rem;">Event Highlights</h3>
+            <div class="newspaper-carousel-wrapper">
+                <button class="carousel-btn prev event-prev" aria-label="Previous">‹</button>
+                <div class="newspaper-carousel-track" id="eventCarousel">
+                    <!-- Dynamically populated -->
+                </div>
+                <button class="carousel-btn next event-next" aria-label="Next">›</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Press Releases -->
+    <section id="press-releases" class="section">
+        <div class="container">
+            <h2 class="text-center">Press <span class="text-gradient">Releases</span></h2>
+            <div class="press-releases-table">
+                <div class="press-row" style="background: #f8fafc; font-weight: 600; color: #0f172a;">
+                    <div>Title</div>
+                    <div>Date</div>
+                    <div>Category</div>
+                    <div></div>
+                </div>
+                <div id="pressReleasesList">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Media Contact CTA -->
+    <section class="section" style="padding-top: 0;">
+        <div class="container">
+            <div class="media-contact-cta">
+                <h3>Media & Press Contact</h3>
+                <p>For media inquiries, interview requests, or press information, please contact our media team.</p>
+                <div class="media-contact-info">
+                    <div class="media-contact-item">
+                        <span>📧</span>
+                        <span>media@ncorefoundation.org</span>
+                    </div>
+                    <div class="media-contact-item">
+                        <span>📞</span>
+                        <span>+91-XXXXXXXXXX</span>
+                    </div>
+                </div>
+                <a href="contact.html" class="btn" style="background: #fff; color: #10b981; border: none;">Request Information</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>NCORE</h3>
+                    <p>Network for Cyber Online Rehabilitation and Empowerment</p>
+                    <p>Building a safer digital world through education, collaboration, and innovation.</p>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/ncore.foundation/" class="social-link" aria-label="Instagram"><svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+  <path fill="currentColor" fill-rule="evenodd" d="M3 8a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8Zm5-3a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V8a3 3 0 0 0-3-3H8Zm7.597 2.214a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2h-.01a1 1 0 0 1-1-1ZM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm-5 3a5 5 0 1 1 10 0 5 5 0 0 1-10 0Z" clip-rule="evenodd"/>
+</svg></a>
+                        <a href="https://www.linkedin.com/company/network-for-cyber-online-rehabilitation-empowerment/" class="social-link" aria-label="LinkedIn"><svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.213 9.787a3.391 3.391 0 0 0-4.795 0l-3.425 3.426a3.39 3.39 0 0 0 4.795 4.794l.321-.304m-.321-4.49a3.39 3.39 0 0 0 4.795 0l3.424-3.426a3.39 3.39 0 0 0-4.794-4.795l-1.028.961"/>
+</svg>
+</a>
+                        <a href="https://www.facebook.com/people/NCORE-Foundation/61578747959138/" class="social-link" aria-label="Facebook"><svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+  <path fill-rule="evenodd" d="M13.135 6H15V3h-1.865a4.147 4.147 0 0 0-4.142 4.142V9H7v3h2v9.938h3V12h2.021l.592-3H12V6.591A.6.6 0 0 1 12.592 6h.543Z" clip-rule="evenodd"/>
+</svg>
+</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="index.html#about">About Us</a>
+                     
+                    <a href="contact.html">Contact</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p>📍 T-11, 1106, Amolik Sankalp, Sector-85, Faridabad, Haryana-121003</p>
+                    <p>📧 contact@ncorefoundation.org</p>
+                    <p>📞 +917011433575</p>
+                    <p>📞 +919567651299</p>
+                    <p>🕒 Mon-Fri: 9:00 AM - 6:00 PM</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 NCORE. All rights reserved. | Privacy Policy | Terms of Service</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lightbox Modal -->
+    <div class="lightbox-modal" id="lightboxModal">
+        <button class="lightbox-close" aria-label="Close">×</button>
+        <button class="lightbox-nav prev" id="lightboxPrev" aria-label="Previous">‹</button>
+        <div class="lightbox-content" id="lightboxContent"></div>
+        <button class="lightbox-nav next" id="lightboxNext" aria-label="Next">›</button>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        // Data Arrays
+        const featuredCoverage = [
+            {
+                title: "NCORE Foundation Launches Cyber Rehabilitation Initiative",
+                source: "The Times of India",
+                date: "March 15, 2024",
+                image: "images/WhatsApp Image 2025-09-19 at 12.19.07 PM (1).jpeg",
+                link: "#",
+                excerpt: "NCORE Foundation announces a comprehensive cyber rehabilitation program to support victims of cybercrime across India."
+            },
+            {
+                title: "Digital Safety Awareness Campaign Reaches 10,000+ Students",
+                source: "Hindustan Times",
+                date: "February 28, 2024",
+                image: "images/WhatsApp Image 2025-09-19 at 12.19.08 PM.jpeg",
+                link: "#",
+                excerpt: "NCORE's nationwide awareness campaign successfully educates students on cyber safety and digital hygiene practices."
+            },
+            {
+                title: "Partnership with Leading Universities for Cyber Education",
+                source: "Economic Times",
+                date: "February 10, 2024",
+                image: "images/WhatsApp Image 2025-09-19 at 12.19.09 PM.jpeg",
+                link: "#",
+                excerpt: "NCORE collaborates with top educational institutions to integrate cybersecurity training into academic curricula."
+            }
+        ];
+
+        const newsItems = [
+            { title: "NCORE Hosts National Cyber Safety Summit 2024", source: "TechCrunch India", date: "March 20, 2024", tag: "Events", image: "images/WhatsApp Image 2025-09-19 at 12.19.07 PM (1).jpeg", link: "#", category: "events" },
+            { title: "New Rehabilitation Center Opens in Delhi NCR", source: "NDTV", date: "March 18, 2024", tag: "News", image: "images/WhatsApp Image 2025-09-19 at 12.19.08 PM.jpeg", link: "#", category: "news" },
+            { title: "CSR Partnership with Major Tech Companies", source: "Business Standard", date: "March 12, 2024", tag: "CSR", image: "images/WhatsApp Image 2025-09-19 at 12.19.09 PM.jpeg", link: "#", category: "csr" },
+            { title: "Awareness Session at IIT Delhi", source: "Campus Times", date: "March 8, 2024", tag: "Awareness", image: "images/WhatsApp Image 2025-09-19 at 12.19.10 PM.jpeg", link: "#", category: "awareness" },
+            { title: "Cyber Safety Workshop for Senior Citizens", source: "Senior Living", date: "March 5, 2024", tag: "Awareness", image: "images/WhatsApp Image 2025-09-19 at 12.19.11 PM.jpeg", link: "#", category: "awareness" },
+            { title: "Government Recognition for Digital Safety Initiative", source: "Press Trust of India", date: "February 28, 2024", tag: "News", image: "images/WhatsApp Image 2025-09-19 at 12.19.07 PM (1).jpeg", link: "#", category: "news" },
+            { title: "Corporate Training Program Launched", source: "HR Magazine", date: "February 25, 2024", tag: "Events", image: "images/WhatsApp Image 2025-09-19 at 12.19.08 PM.jpeg", link: "#", category: "events" },
+            { title: "CSR Funding for Rural Cyber Education", source: "CSR Journal", date: "February 20, 2024", tag: "CSR", image: "images/WhatsApp Image 2025-09-19 at 12.19.09 PM.jpeg", link: "#", category: "csr" },
+            { title: "School Cyber Safety Program Expansion", source: "Education Times", date: "February 15, 2024", tag: "Awareness", image: "images/WhatsApp Image 2025-09-19 at 12.19.10 PM.jpeg", link: "#", category: "awareness" }
+        ];
+
+        const newspaperCuttings = [
+            { image: "images/WhatsApp Image 2025-09-19 at 12.19.07 PM (1).jpeg", caption: "The Times of India - March 2024" },
+            { image: "images/WhatsApp Image 2025-09-19 at 12.19.08 PM.jpeg", caption: "Hindustan Times - February 2024" },
+            { image: "images/WhatsApp Image 2025-09-19 at 12.19.09 PM.jpeg", caption: "Economic Times - February 2024" },
+            { image: "images/WhatsApp Image 2025-09-19 at 12.19.10 PM.jpeg", caption: "The Hindu - January 2024" },
+            { image: "images/WhatsApp Image 2025-09-19 at 12.19.11 PM.jpeg", caption: "Indian Express - January 2024" },
+            { image: "images/WhatsApp Image 2025-09-19 at 12.19.07 PM (1).jpeg", caption: "Business Standard - December 2023" }
+        ];
+
+        const videoHighlights = [
+            { title: "NCORE Foundation Impact Story", date: "March 2024", platform: "YouTube", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+            { title: "Cyber Safety Awareness Session", date: "February 2024", platform: "YouTube", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+            { title: "Rehabilitation Center Launch", date: "February 2024", platform: "YouTube", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+            { title: "Interview with NCORE Founder", date: "January 2024", platform: "YouTube", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+            { title: "Digital Detox Program Highlights", date: "January 2024", platform: "YouTube", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+            { title: "CSR Partnership Announcement", date: "December 2023", platform: "YouTube", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" }
+        ];
+
+        const galleryPhotos = [
+            { image: "images/WhatsApp Image 2025-09-19 at 12.19.07 PM (1).jpeg", caption: "Event 1" },
+            { image: "images/WhatsApp Image 2025-09-19 at 12.19.08 PM.jpeg", caption: "Event 2" },
+            { image: "images/WhatsApp Image 2025-09-19 at 12.19.09 PM.jpeg", caption: "Event 3" },
+            { image: "images/WhatsApp Image 2025-09-19 at 12.19.10 PM.jpeg", caption: "Event 4" },
+            { image: "images/WhatsApp Image 2025-09-19 at 12.19.11 PM.jpeg", caption: "Event 5" },
+            { image: "images/WhatsApp Image 2025-09-19 at 12.19.07 PM (1).jpeg", caption: "Event 6" },
+            { image: "images/WhatsApp Image 2025-09-19 at 12.19.08 PM.jpeg", caption: "Event 7" },
+            { image: "images/WhatsApp Image 2025-09-19 at 12.19.09 PM.jpeg", caption: "Event 8" }
+        ];
+
+        const pressReleases = [
+            { title: "NCORE Foundation Launches National Cyber Rehabilitation Network", date: "March 15, 2024", category: "Announcement" },
+            { title: "Partnership with Leading Universities for Cyber Education", date: "February 28, 2024", category: "Partnership" },
+            { title: "CSR Initiative: Digital Safety for Rural Communities", date: "February 20, 2024", category: "CSR" },
+            { title: "New Rehabilitation Center Opens in Delhi NCR", date: "February 10, 2024", category: "Announcement" },
+            { title: "Awareness Campaign Reaches 50,000+ Students", date: "January 25, 2024", category: "Impact" },
+            { title: "Government Recognition for Digital Safety Programs", date: "January 10, 2024", category: "Recognition" }
+        ];
+
+        // Initialize on DOM load
+        document.addEventListener('DOMContentLoaded', function() {
+            renderFeaturedCarousel();
+            renderNewsGrid();
+            renderNewspaperCarousel();
+            renderVideoCarousel();
+            renderGalleryMasonry();
+            renderEventCarousel();
+            renderPressReleases();
+            initCarousels();
+            initLightbox();
+            initNewsFilter();
+        });
+
+        // Render Functions
+        function renderFeaturedCarousel() {
+            const track = document.getElementById('featuredCarousel');
+            const indicators = document.getElementById('featuredIndicators');
+            track.innerHTML = '';
+            indicators.innerHTML = '';
+            
+            featuredCoverage.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'featured-card';
+                card.innerHTML = `
+                    <div class="featured-card-image">
+                        <img src="${item.image}" alt="${item.title}" loading="lazy">
+                    </div>
+                    <div class="featured-card-content">
+                        <div class="featured-card-source">${item.source}</div>
+                        <h3 class="featured-card-title">${item.title}</h3>
+                        <p class="featured-card-excerpt">${item.excerpt}</p>
+                        <div class="featured-card-date">${item.date}</div>
+                        <a href="${item.link}" class="btn btn-primary">Read More</a>
+                    </div>
+                `;
+                track.appendChild(card);
+                
+                const indicator = document.createElement('button');
+                indicator.className = 'carousel-indicator' + (index === 0 ? ' active' : '');
+                indicator.setAttribute('data-slide', index);
+                indicators.appendChild(indicator);
+            });
+        }
+
+        function renderNewsGrid(filter = 'all') {
+            const grid = document.getElementById('newsGrid');
+            grid.innerHTML = '';
+            
+            const filtered = filter === 'all' ? newsItems : newsItems.filter(item => item.category === filter);
+            
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'news-card';
+                card.innerHTML = `
+                    <div class="news-card-image">
+                        <img src="${item.image}" alt="${item.title}" loading="lazy">
+                    </div>
+                    <div class="news-card-content">
+                        <span class="news-card-tag">${item.tag}</span>
+                        <h3 class="news-card-title">${item.title}</h3>
+                        <div class="news-card-meta">${item.source} • ${item.date}</div>
+                        <a href="${item.link}" class="btn btn-outline" style="font-size: .875rem; padding: .4rem 1rem;">Read More</a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderNewspaperCarousel() {
+            const track = document.getElementById('newspaperCarousel');
+            track.innerHTML = '';
+            
+            newspaperCuttings.forEach((item, index) => {
+                const thumb = document.createElement('div');
+                thumb.className = 'newspaper-thumb';
+                thumb.setAttribute('data-index', index);
+                thumb.innerHTML = `<img src="${item.image}" alt="${item.caption}" loading="lazy">`;
+                thumb.addEventListener('click', () => openLightbox(newspaperCuttings, index));
+                track.appendChild(thumb);
+            });
+        }
+
+        function renderVideoCarousel() {
+            const track = document.getElementById('videoCarousel');
+            track.innerHTML = '';
+            
+            videoHighlights.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'video-card';
+                card.innerHTML = `
+                    <div class="video-card-embed">
+                        <iframe src="${item.url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-card-content">
+                        <h4 class="video-card-title">${item.title}</h4>
+                        <div class="video-card-meta">${item.platform} • ${item.date}</div>
+                    </div>
+                `;
+                track.appendChild(card);
+            });
+        }
+
+        function renderGalleryMasonry() {
+            const masonry = document.getElementById('galleryMasonry');
+            masonry.innerHTML = '';
+            
+            galleryPhotos.forEach((item, index) => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+                galleryItem.setAttribute('data-index', index);
+                galleryItem.innerHTML = `<img src="${item.image}" alt="${item.caption}" loading="lazy">`;
+                galleryItem.addEventListener('click', () => openLightbox(galleryPhotos, index));
+                masonry.appendChild(galleryItem);
+            });
+        }
+
+        function renderEventCarousel() {
+            const track = document.getElementById('eventCarousel');
+            track.innerHTML = '';
+            
+            galleryPhotos.slice(0, 6).forEach((item, index) => {
+                const thumb = document.createElement('div');
+                thumb.className = 'newspaper-thumb';
+                thumb.setAttribute('data-index', index);
+                thumb.innerHTML = `<img src="${item.image}" alt="${item.caption}" loading="lazy">`;
+                thumb.addEventListener('click', () => openLightbox(galleryPhotos, index));
+                track.appendChild(thumb);
+            });
+        }
+
+        function renderPressReleases() {
+            const list = document.getElementById('pressReleasesList');
+            list.innerHTML = '';
+            
+            pressReleases.forEach(item => {
+                const row = document.createElement('div');
+                row.className = 'press-row';
+                row.innerHTML = `
+                    <div class="press-row-title">${item.title}</div>
+                    <div class="press-row-date">${item.date}</div>
+                    <div class="press-row-category">${item.category}</div>
+                    <a href="#" class="btn btn-outline" style="font-size: .875rem; padding: .4rem 1rem;">Download PDF</a>
+                `;
+                list.appendChild(row);
+            });
+        }
+
+        // Carousel Functions
+        function initCarousels() {
+            initCarousel('featured', featuredCoverage.length);
+            initCarousel('newspaper', newspaperCuttings.length);
+            initCarousel('video', videoHighlights.length);
+            initCarousel('event', 6);
+        }
+
+        function initCarousel(prefix, totalSlides) {
+            const track = document.getElementById(prefix + 'Carousel');
+            const prevBtn = document.querySelector('.' + prefix + '-prev');
+            const nextBtn = document.querySelector('.' + prefix + '-next');
+            let currentIndex = 0;
+            const itemsPerView = window.innerWidth <= 768 ? 1 : window.innerWidth <= 1024 ? 2 : (prefix === 'featured' ? 1 : (prefix === 'video' ? 2 : 3));
+            
+            if (!track || !prevBtn || !nextBtn) return;
+            
+            function updateCarousel() {
+                const itemWidth = track.querySelector('div')?.offsetWidth || 0;
+                const gap = 24;
+                const translateX = -(currentIndex * (itemWidth + gap));
+                track.style.transform = `translateX(${translateX}px)`;
+                
+                if (prefix === 'featured') {
+                    document.querySelectorAll('#featuredIndicators .carousel-indicator').forEach((ind, i) => {
+                        ind.classList.toggle('active', i === currentIndex);
+                    });
+                }
+            }
+            
+            prevBtn.addEventListener('click', () => {
+                currentIndex = Math.max(0, currentIndex - 1);
+                updateCarousel();
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                currentIndex = Math.min(totalSlides - itemsPerView, currentIndex + 1);
+                updateCarousel();
+            });
+            
+            if (prefix === 'featured') {
+                document.querySelectorAll('#featuredIndicators .carousel-indicator').forEach((ind, i) => {
+                    ind.addEventListener('click', () => {
+                        currentIndex = i;
+                        updateCarousel();
+                    });
+                });
+            }
+            
+            window.addEventListener('resize', updateCarousel);
+            updateCarousel();
+        }
+
+        // Lightbox Functions
+        let currentLightboxIndex = 0;
+        let currentLightboxItems = [];
+
+        function openLightbox(items, index) {
+            currentLightboxItems = items;
+            currentLightboxIndex = index;
+            const modal = document.getElementById('lightboxModal');
+            const content = document.getElementById('lightboxContent');
+            const img = document.createElement('img');
+            img.src = items[index].image;
+            img.alt = items[index].caption || '';
+            content.innerHTML = '';
+            content.appendChild(img);
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const modal = document.getElementById('lightboxModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function initLightbox() {
+            const modal = document.getElementById('lightboxModal');
+            const closeBtn = document.querySelector('.lightbox-close');
+            const prevBtn = document.getElementById('lightboxPrev');
+            const nextBtn = document.getElementById('lightboxNext');
+            
+            closeBtn.addEventListener('click', closeLightbox);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeLightbox();
+            });
+            
+            prevBtn.addEventListener('click', () => {
+                currentLightboxIndex = (currentLightboxIndex - 1 + currentLightboxItems.length) % currentLightboxItems.length;
+                const content = document.getElementById('lightboxContent');
+                const img = document.createElement('img');
+                img.src = currentLightboxItems[currentLightboxIndex].image;
+                img.alt = currentLightboxItems[currentLightboxIndex].caption || '';
+                content.innerHTML = '';
+                content.appendChild(img);
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                currentLightboxIndex = (currentLightboxIndex + 1) % currentLightboxItems.length;
+                const content = document.getElementById('lightboxContent');
+                const img = document.createElement('img');
+                img.src = currentLightboxItems[currentLightboxIndex].image;
+                img.alt = currentLightboxItems[currentLightboxIndex].caption || '';
+                content.innerHTML = '';
+                content.appendChild(img);
+            });
+        }
+
+        // News Filter
+        function initNewsFilter() {
+            const tabs = document.querySelectorAll('.filter-tab');
+            const searchInput = document.getElementById('newsSearch');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    const filter = tab.getAttribute('data-filter');
+                    renderNewsGrid(filter);
+                });
+            });
+            
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                const cards = document.querySelectorAll('.news-card');
+                cards.forEach(card => {
+                    const title = card.querySelector('.news-card-title').textContent.toLowerCase();
+                    card.style.display = title.includes(query) ? '' : 'none';
+                });
+            });
+        }
+    </script>
+</body>
+</html>
